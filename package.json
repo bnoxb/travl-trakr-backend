@@ -1,0 +1,26 @@
+{
+  "name": "travltrakr-server",
+  "version": "1.0.0",
+  "description": "Travel tracking app, for either future or past travel. Get ideas of what to do, and familiarize yourself with where you'll be.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmandel2/travl-trakr-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tmandel2/travl-trakr-backend/issues"
+  },
+  "homepage": "https://github.com/tmandel2/travl-trakr-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "mongoose": "^5.4.10"
+  }
+}
