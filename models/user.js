@@ -1,6 +1,6 @@
 const mongoose	= require('mongoose');
 
-const trips		= require('./trip')
+const Trip		= require('./trip');
 
 
 const userSchema = new mongoose.Schema({
