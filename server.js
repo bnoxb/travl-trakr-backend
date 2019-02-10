@@ -3,6 +3,8 @@ const app				= express();
 const bodyParser		= require('body-parser');
 const cors				= require('cors');
 const session			= require('express-session');
+const User 				= require('./models/user');
+const Trip 				= require('./models/trip');
 
 require('./db/db');
 
