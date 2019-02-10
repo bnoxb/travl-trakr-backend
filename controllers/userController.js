@@ -47,6 +47,20 @@ router.post('/login', async (req, res) => {
 	}
 });
 
+router.get('/:id', async (req, res) => {
+	try {
+		const foundUser = await User.findById(req.params.id);
+		const currentUser = await User.findOne({username: req.session.username})l;
+		res.json({
+			status: 200,
+			data: [foundUser, currentUser];
+		})
+
+	} catch(err) {
+		console.log(err);
+		res.send(err);
+	}
+})
 
 
 
