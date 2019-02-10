@@ -20,6 +20,19 @@ router.post('/', async(req, res) => {
 	}
 })
 
+router.get('/:id', async(req, res) => {
+	try{ 
+		const foundTrip = await Trip.findById(req.params.id);
+		res.json({
+			status: 200,
+			data: foundTrip
+		})
+	} catch(err) {
+		console.log(err);
+		res.send(err);
+	}
+})
+
 
 
 
