@@ -31,10 +31,12 @@ app.use(cors(corsOptions));
 
 const userController		= require('./controllers/userController');
 const tripController		= require('./controllers/tripController');
+const authController		= require('./controllers/authController');
 
 
 app.use('/api/v1/users', userController);
 app.use('/trips', tripController);
+app.use('/auth', authController);
 
 
 
