@@ -6,7 +6,7 @@ const tripSchema = new mongoose.Schema({
 	country: String,
 	dateArrived: Date,
 	dateLeft: Date,
-	Notes: [String]
+	notes: [String]
 });
 
 
