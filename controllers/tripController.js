@@ -12,7 +12,10 @@ router.post('/', async(req, res) => {
 		await foundUser.save()
 		res.json({
 			status: 200,
-			data: foundUser
+			data: {
+				message: 'created successfully',
+				user: foundUser
+			}
 		})
 	} catch(err) {
 		console.log(err);
