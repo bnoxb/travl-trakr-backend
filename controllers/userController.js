@@ -53,7 +53,7 @@ router.get('/:id', async (req, res) => {
 		const currentUser = await User.findOne({username: req.session.username});
 		res.json({
 			status: 200,
-			data: [foundUser, currentUser]
+			data: foundUser
 		})
 
 	} catch(err) {

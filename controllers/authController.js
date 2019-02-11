@@ -12,6 +12,7 @@ router.post('/', async (req, res) => {
 		userPassEntry.password = hashedUserPassword;
 		userPassEntry.username = req.body.username;
 		userPassEntry.email = req.body.email;
+		userPassEntry.trips = [];
 	try {
 		const newUser = await User.create(userPassEntry);
 		req.session.loggedIn = true;
@@ -20,7 +21,10 @@ router.post('/', async (req, res) => {
 
 		res.json({
 			status: 200,
-			data: 'user creation successful'
+			data: {
+				message: 'user creation successful',
+				user: newUser
+			}
 		})
 	} catch(err) {
 		console.log(err);
@@ -38,7 +42,10 @@ router.post('/login', async (req, res) => {
 
 			res.json({
 				status: 200,
-				data: 'login successful'
+				data: {
+					message: 'login successful',
+					user: returnUser
+				}
 			})
 		}
 	} catch(err) {
