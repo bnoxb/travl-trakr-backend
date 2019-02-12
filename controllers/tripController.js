@@ -44,20 +44,6 @@ router.get('/yelp/:id', async (req, res) => {
 	}).catch(e => {
 		console.log(e);
 	});
-	// try{
-	// 	const yelpResponse = await fetch (`https://api.yelp.com/v3/businesses/search?location=${foundTrip.name}&attributes=hot_and_new`, {
-	// 		headers: {
-	// 			'Authorization': 'Bearer DXtElh5EDH3h6uff8IZFr_iQDaAgkwqNQAKYCHo2aj8MrD0gZ__8cdvU6Md2da_gz1asTph1FJ70oLk0UnugdW2iHb7r8c8DSGbPaQSDmNEiS52wDqVOwc31OIhdXHYx'
-	// 		}
-	// 	})
-	// 	console.log(yelpResponse, ' yelpresponse');
-	// 	res.json({
-	// 		status: 200,
-	// 		data: yelpResponse
-	// 	})
-	// } catch(err) {
-	// 	res.send(err)
-	// }
 })
 
 
@@ -76,6 +62,20 @@ router.get('/:id', async(req, res) => {
 })
 
 
+router.delete('/:id', async (req, res) => {
+	try {
+		const userWithTrip = await User.findOne({'trips._id': req.params.id});
+		userWithTrip.trips.id(req.params.id).remove();
+		await userWithTrip.save();
+		const deletedTrip = await Trip.findByIdAndRemove(req.params.id);
+		res.json({
+			status: 200,
+			data: deletedTrip
+		});
+	}catch(err){
+		res.send(err);
+	}
+});
 
 
 
