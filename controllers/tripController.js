@@ -28,7 +28,7 @@ router.post('/', async(req, res) => {
 router.get('/yelp/:id', async (req, res) => {
 	const foundTrip = await Trip.findById(req.params.id);
 	const searchRequest = {
-		location: foundTrip.name,
+		location: `${foundTrip.name},${foundTrip.state},${foundTrip.country}`,
 		attributes: 'hot_and_new'
 	};
 	console.log(foundTrip);
