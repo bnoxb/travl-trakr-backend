@@ -61,7 +61,25 @@ router.get('/:id', async(req, res) => {
 	}
 })
 
-router.put('/:id', async (req, res)=>{
+router.put('/:id/addNote', async (req, res) => {
+	try {
+	    const foundTrip = await Trip.findById(req.params.id);
+	    const foundUser = await User.findOne({'trips._id': req.params.id});
+	    foundTrip.notes.push(req.body.note);
+	    await foundTrip.save();
+	    foundUser.trips.id(req.params.id).remove();
+	    foundUser.trips.push(foundTrip);
+	    await foundUser.save();
+	    res.json({
+	    	status:200,
+	    	data: foundTrip
+	    })
+	} catch (err) {
+	    res.send(err)
+	}
+});
+
+router.put('/:id', async (req, res) => {
 	try {
 		const updatedTrip = await Trip.findByIdAndUpdate(req.params.id, req.body, {new: true});
 		const foundUser = await User.findOne({'trips._id': req.params.id});
