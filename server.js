@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express			= require('express');
 const app				= express();
 const bodyParser		= require('body-parser');
@@ -10,7 +11,7 @@ require('./db/db');
 
 
 app.use(session({
-	secret: 'i like to travel',
+	secret: process.env.secret,
 	resave: false,
 	saveUninitialied: false
 }));
@@ -21,7 +22,7 @@ app.use(bodyParser.json());
 
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: process.env.origin,
   credentials: true,
   optionsSuccessStatus: 200
 }
@@ -35,12 +36,12 @@ const authController		= require('./controllers/authController');
 
 
 app.use('/api/v1/users', userController);
-app.use('/trips', tripController);
-app.use('/auth', authController);
+app.use('/api/v1/trips', tripController);
+app.use('/api/v1/auth', authController);
 
 
 
 
-app.listen(process.env.PORT || 9000, () => {
-  console.log('listening on port 9000');
+app.listen(process.env.PORT, () => {
+  console.log(`listening on port`);
 });

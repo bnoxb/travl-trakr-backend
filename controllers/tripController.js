@@ -32,11 +32,9 @@ router.get('/yelp/:id', async (req, res) => {
 		attributes: 'hot_and_new'
 	};
 	console.log(foundTrip);
-	const client = yelp.client('DXtElh5EDH3h6uff8IZFr_iQDaAgkwqNQAKYCHo2aj8MrD0gZ__8cdvU6Md2da_gz1asTph1FJ70oLk0UnugdW2iHb7r8c8DSGbPaQSDmNEiS52wDqVOwc31OIhdXHYx');
+	const client = yelp.client(process.env.yelpKey);
 
 	client.search(searchRequest).then(response => {
-		// const firstResult = response.jsonBody.businesses[0];
-		// const prettyJson = JSON.stringify(firstResult, null, 4);
 		res.json({
 			status: 200,
 			data: response
