@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const Trip = require('../models/trip');
 
-
+// For showing the top user bar in the app.
 router.get('/:id', async (req, res) => {
 	try {
 		const foundUser = await User.findById(req.params.id);
@@ -21,13 +21,15 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-
+// Edits the user
 router.put('/:id/edited', async (req, res) => {
 	try {
 		const foundUser = await User.findById(req.params.id);
+		// If they keep the same password, then it's an easy update.
 		if(req.body.password.toString() === foundUser.password) {
 			const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true});
 		} else {
+			// If the password is updated, then a new one is then hashed.
 			const hashedUserPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
 			const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true});
 			updatedUser.password = hashedUserPassword;
@@ -42,7 +44,7 @@ router.put('/:id/edited', async (req, res) => {
 	}
 });
 
-
+// Delete the user AND also their trips since trips are user specific.
 router.delete('/:id', async (req, res) => {
 	try {
 		const deletedUser = await User.findByIdAndRemove(req.params.id);

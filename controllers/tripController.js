@@ -4,7 +4,7 @@ const User = require('../models/user');
 const Trip = require('../models/trip');
 const yelp = require('yelp-fusion');
 
-
+// Create a new trip. Trips are specific to the perosn making them.
 router.post('/', async(req, res) => {
 	try {
 		const newTrip = await Trip.create(req.body);
@@ -23,19 +23,20 @@ router.post('/', async(req, res) => {
 		res.json({
 			status: 400,
 			data: {
-				message: 'Try another username'
+				message: 'Something broke'
 			}
 		});
 
 	}
 })
 
-
+// This path retriees the information from yelp using a node 'yelp-fusion'.
 router.get('/yelp/:id', async (req, res) => {
 	try {
 		const foundTrip = await Trip.findById(req.params.id);
 		const searchRequest = {
 			location: `${foundTrip.name},${foundTrip.state},${foundTrip.country}`,
+			// Changing these attributes would change what types of places are returned.
 			attributes: 'hot_and_new'
 		};
 		const client = yelp.client(process.env.yelpKey);
@@ -54,7 +55,7 @@ router.get('/yelp/:id', async (req, res) => {
 })
 
 
-
+// Show a specific trip
 router.get('/:id', async(req, res) => {
 	try{ 
 		const foundTrip = await Trip.findById(req.params.id);
@@ -68,6 +69,7 @@ router.get('/:id', async(req, res) => {
 	}
 })
 
+// Add a note to the trip. Notes are contained in an array inside the trip. This pushes the new note in.
 router.put('/:id/addNote', async (req, res) => {
 	try {
 	    const foundTrip = await Trip.findById(req.params.id);
@@ -86,6 +88,7 @@ router.put('/:id/addNote', async (req, res) => {
 	}
 });
 
+// Updates the trip information. Since trips are specific to users, the user is also updated.
 router.put('/:id', async (req, res) => {
 	try {
 		const updatedTrip = await Trip.findByIdAndUpdate(req.params.id, req.body, {new: true});
@@ -102,6 +105,7 @@ router.put('/:id', async (req, res) => {
 	}
 });
 
+// Delete the trip, and remove it from the User
 router.delete('/:id', async (req, res) => {
 	try {
 		const userWithTrip = await User.findOne({'trips._id': req.params.id});
@@ -116,17 +120,6 @@ router.delete('/:id', async (req, res) => {
 		res.send(err);
 	}
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 

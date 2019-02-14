@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const Trip = require('../models/trip');
 
-
+// New user made
 router.post('/', async (req, res) => {
 		const hashedUserPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
 		const userPassEntry = {};
@@ -15,6 +15,7 @@ router.post('/', async (req, res) => {
 		userPassEntry.trips = [];
 	try {
 		const foundUser = await User.findOne({ username: req.body.username });
+// The unique function on my model was not working. This checks to see if the name is already there.
 		if (foundUser) {
 			res.json({
 				status: 409,
@@ -39,6 +40,7 @@ router.post('/', async (req, res) => {
 	}
 })
 
+// Login
 router.post('/login', async (req, res) => {
 	try {
 		const returnUser = await User.findOne({ username: req.body.username });
@@ -46,7 +48,6 @@ router.post('/login', async (req, res) => {
 			req.session._id = returnUser._id;
 			req.session.username = returnUser.username;
 			req.session.loggedIn = true;
-
 			res.json({
 				status: 200,
 				data: {
@@ -54,12 +55,14 @@ router.post('/login', async (req, res) => {
 					user: returnUser
 				}
 			})
+			// If you have the wrong password
 		} else {
 			res.json({
 				status: 401,
 				data: 'Failed to login. Try another username or password.'
 			})
 		}
+		// If you have the wrong username
 	} catch(err) {
 		console.log(err);
 		res.json({
@@ -69,6 +72,7 @@ router.post('/login', async (req, res) => {
 	}
 });
 
+// Logout
 router.get('/logout', async (req, res) => {
 	req.session.destroy((err) => {
 		res.json({
