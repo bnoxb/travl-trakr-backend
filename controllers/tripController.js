@@ -12,7 +12,7 @@ router.post('/', async(req, res) => {
 		foundUser.trips.push(newTrip);
 		await foundUser.save()
 		res.json({
-			status: 200,
+			status: 201,
 			data: {
 				message: 'created successfully',
 				user: foundUser
@@ -20,28 +20,38 @@ router.post('/', async(req, res) => {
 		})
 	} catch(err) {
 		console.log(err);
-		res.send(err);
+		res.json({
+			status: 400,
+			data: {
+				message: 'Try another username'
+			}
+		});
+
 	}
 })
 
 
 router.get('/yelp/:id', async (req, res) => {
-	const foundTrip = await Trip.findById(req.params.id);
-	const searchRequest = {
-		location: `${foundTrip.name},${foundTrip.state},${foundTrip.country}`,
-		attributes: 'hot_and_new'
-	};
-	console.log(foundTrip);
-	const client = yelp.client(process.env.yelpKey);
-
-	client.search(searchRequest).then(response => {
+	try {
+		const foundTrip = await Trip.findById(req.params.id);
+		const searchRequest = {
+			location: `${foundTrip.name},${foundTrip.state},${foundTrip.country}`,
+			attributes: 'hot_and_new'
+		};
+		console.log(foundTrip);
+		const client = yelp.client(process.env.yelpKey);
+		const response = await client.search(searchRequest);
+			res.json({
+				status: 200,
+				data: response
+			})
+	} catch(err) {
+		console.log(err);
 		res.json({
-			status: 200,
-			data: response
+			status: 400,
+			data: err
 		})
-	}).catch(e => {
-		console.log(e);
-	});
+	}
 })
 
 
@@ -69,7 +79,7 @@ router.put('/:id/addNote', async (req, res) => {
 	    foundUser.trips.push(foundTrip);
 	    await foundUser.save();
 	    res.json({
-	    	status:200,
+	    	status:201,
 	    	data: foundTrip
 	    })
 	} catch (err) {

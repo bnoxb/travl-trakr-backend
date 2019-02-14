@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
 		req.session.username = newUser.username;
 
 		res.json({
-			status: 200,
+			status: 201,
 			data: {
 				message: 'user creation successful',
 				user: newUser
@@ -28,7 +28,10 @@ router.post('/', async (req, res) => {
 		})
 	} catch(err) {
 		console.log(err);
-		res.send(err);
+		res.json({
+			status: 409,
+			data: 'Try another username.'
+		});
 	}
 })
 
@@ -47,10 +50,14 @@ router.post('/login', async (req, res) => {
 					user: returnUser
 				}
 			})
+		} else {
+			res.json({
+				status: 401,
+				data: 'Failed to login. Try another username or password.'
+			})
 		}
 	} catch(err) {
 		console.log(err);
-		res.send(err);
 	}
 });
 
