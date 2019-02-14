@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/travltrakr', {
   useNewUrlParser: true,
   useCreateIndex: true,
-  autoIndex: true,
   useFindAndModify: false
 });
 

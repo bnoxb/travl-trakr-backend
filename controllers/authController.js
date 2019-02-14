@@ -14,24 +14,28 @@ router.post('/', async (req, res) => {
 		userPassEntry.email = req.body.email;
 		userPassEntry.trips = [];
 	try {
-		const newUser = await User.create(userPassEntry);
-		req.session.loggedIn = true;
-		req.session._id = newUser._id;
-		req.session.username = newUser.username;
-
-		res.json({
-			status: 201,
-			data: {
-				message: 'user creation successful',
-				user: newUser
-			}
-		})
+		const foundUser = await User.findOne({ username: req.body.username });
+		if (foundUser) {
+			res.json({
+				status: 409,
+				data: 'Try another username.'
+			});
+		} else {
+			const newUser = await User.create(userPassEntry);
+			req.session.loggedIn = true;
+			req.session._id = newUser._id;
+			req.session.username = newUser.username;
+			res.json({
+				status: 201,
+				data: {
+					message: 'user creation successful',
+					user: newUser
+				}
+			})
+		}
 	} catch(err) {
 		console.log(err);
-		res.json({
-			status: 409,
-			data: 'Try another username.'
-		});
+		
 	}
 })
 
@@ -58,6 +62,10 @@ router.post('/login', async (req, res) => {
 		}
 	} catch(err) {
 		console.log(err);
+		res.json({
+			status: 401,
+			data: 'Failed to login. Try another username or password.'
+		})
 	}
 });
 
