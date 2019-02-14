@@ -4,6 +4,7 @@
   "description": "Travel tracking app, for either future or past travel. Get ideas of what to do, and familiarize yourself with where you'll be.",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
