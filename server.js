@@ -13,7 +13,7 @@ require('./db/db');
 app.use(session({
 	secret: process.env.secret,
 	resave: false,
-	saveUninitialied: false
+	saveUninitialized: false
 }));
 
 

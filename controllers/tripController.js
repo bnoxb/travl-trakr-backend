@@ -38,7 +38,6 @@ router.get('/yelp/:id', async (req, res) => {
 			location: `${foundTrip.name},${foundTrip.state},${foundTrip.country}`,
 			attributes: 'hot_and_new'
 		};
-		console.log(foundTrip);
 		const client = yelp.client(process.env.yelpKey);
 		const response = await client.search(searchRequest);
 			res.json({
