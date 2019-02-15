@@ -124,19 +124,38 @@ router.get('/:id', async(req, res) => {
 // Add a note to the trip. Notes are contained in an array inside the trip. This pushes the new note in.
 router.put('/:id/addNote', async (req, res) => {
 	try {
-	    const foundTrip = await Trip.findById(req.params.id);
-	    const foundUser = await User.findOne({'trips._id': req.params.id});
-	    foundTrip.notes.push(req.body.note);
-	    await foundTrip.save();
-	    foundUser.trips.id(req.params.id).remove();
-	    foundUser.trips.push(foundTrip);
-	    await foundUser.save();
-	    res.json({
-	    	status:201,
-	    	data: foundTrip
-	    })
+		const foundTrip = await Trip.findById(req.params.id);
+		const foundUser = await User.findOne({'trips._id': req.params.id});
+		foundTrip.notes.push(req.body.note);
+		await foundTrip.save();
+		foundUser.trips.id(req.params.id).remove();
+		foundUser.trips.push(foundTrip);
+		await foundUser.save();
+		res.json({
+			status:201,
+			data: foundTrip
+		})
 	} catch (err) {
-	    res.send(err)
+		res.send(err)
+	}
+});
+
+// Remove a note
+router.put('/:id/deleteNote', async (req, res) => {
+	try {
+		const foundTrip = await Trip.findById(req.params.id);
+		const foundUser = await User.findOne({'trips._id': req.params.id});
+		foundTrip.notes = req.body;
+		await foundTrip.save();
+		foundUser.trips.id(req.params.id).remove();
+		foundUser.trips.push(foundTrip);
+		await foundUser.save();
+		res.json({
+			status:201,
+			data: foundTrip
+		})
+	} catch (err) {
+		res.send(err)
 	}
 });
 
