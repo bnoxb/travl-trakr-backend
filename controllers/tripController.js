@@ -30,8 +30,8 @@ router.post('/', async(req, res) => {
 	}
 })
 
-// This path retriees the information from yelp using a node 'yelp-fusion'.
-router.get('/yelp/:id', async (req, res) => {
+// This path retrieves the information from yelp using a node 'yelp-fusion': HOT AND NEW.
+router.get('/yelp/:id/hot_and_new', async (req, res) => {
 	try {
 		const foundTrip = await Trip.findById(req.params.id);
 		const searchRequest = {
@@ -53,6 +53,58 @@ router.get('/yelp/:id', async (req, res) => {
 		})
 	}
 })
+
+
+// This path retrieves the information from yelp using a node 'yelp-fusion': SORTS BY REVIEW COUNT.
+router.get('/yelp/:id/most_reviewed', async (req, res) => {
+	try {
+		const foundTrip = await Trip.findById(req.params.id);
+		const searchRequest = {
+			location: `${foundTrip.name},${foundTrip.state},${foundTrip.country}`,
+			// Changing these attributes would change what types of places are returned.
+			sort_by: 'review_count'
+		};
+		const client = yelp.client(process.env.yelpKey);
+		const response = await client.search(searchRequest);
+			res.json({
+				status: 200,
+				data: response
+			})
+	} catch(err) {
+		console.log(err);
+		res.json({
+			status: 400,
+			data: err
+		})
+	}
+})
+
+
+// This path retrieves the information from yelp using a node 'yelp-fusion': BEST MATCH.
+router.get('/yelp/:id/best_match', async (req, res) => {
+	try {
+		const foundTrip = await Trip.findById(req.params.id);
+		const searchRequest = {
+			location: `${foundTrip.name},${foundTrip.state},${foundTrip.country}`,
+			// Changing these attributes would change what types of places are returned.
+			sort_by: 'best_match'
+		};
+		const client = yelp.client(process.env.yelpKey);
+		const response = await client.search(searchRequest);
+			res.json({
+				status: 200,
+				data: response
+			})
+	} catch(err) {
+		console.log(err);
+		res.json({
+			status: 400,
+			data: err
+		})
+	}
+})
+
+
 
 
 // Show a specific trip
